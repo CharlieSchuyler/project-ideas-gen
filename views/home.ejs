@@ -4,29 +4,20 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="css/home.css">
 		<title>Home</title>
 	</head>
 	<body>
 		<div class="main">
 			<div class="container">
-				<h1><%= name %></h1>
-				<h2><%= desc %></h2>
-				<a href="/create">Add to Database</a>
+				<h1 class="title"><%= title %></h1>
+				<p class="description"><%= description %> </p>
+				<p class="user"><%= user %> </p>
 			</div>
 		</div>
+		<div class="create" onclick="redirect()">
+			Want to add your own idea?
+		</div>
 	</body>
-	<style>
-		.main {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-		.container {
-			text-align: center;
-
-			background-color: antiquewhite;
-			width: 20%;
-			height: 50vh;
-		}
-	</style>
+	<script src="js/home.js"></script>
 </html>

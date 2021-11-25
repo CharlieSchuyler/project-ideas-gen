@@ -5,42 +5,44 @@ const port = 3000;
 var LinvoDB = require("linvodb3");
 LinvoDB.dbPath = process.cwd();
 var dataItem = new LinvoDB("items", {});
-//express
-app.set("view engine", "ejs");
 
-app.use(express.urlencoded({ extended: true }));
-//
+app.set("view engine", "ejs"); //set view engine
+app.use(express.urlencoded({ extended: true }));  //allow routing
+app.use(express.static('public')) //use static files
+app.use('/static', express.static('public')) //use static files
 
-//express
+//get
 app.get("/", (req, res) => {
 	dataItem.find({}, function (err, docs) {
-		randomDoc = docs[randomNum(0, docs.length)];
-		res.render("home", { name: randomDoc.projectName, desc: randomDoc.projectDescription });
+		randomDoc = docs[randomNum(0, docs.length)]; //generates random number to display random doc
+		res.render("home", { title: randomDoc.projectName, description: randomDoc.projectDescription, user: randomDoc.projectCreator });
 	});
 });
 
-app.get("/create", (req, res) => res.render("new"));
-//
+app.get("/create", (req, res) => res.render("new")); // renders create page
 
-app.get("/search/:proName", (req, res) => {
-	dataItem.find({ projectName: req.params.proName }, function (err, docs) {
-		if (docs[0] === undefined) res.send("doesn't exist");
-		console.log(docs);
-		res.send(docs[0]);
-	});
-});
-//
 //post requests
-app.post("/", (req, res) => {
-	dataItem.insert([{ projectName: req.body.name, projectDescription: req.body.description }], function (err, docs) {
-		console.log(docs[0]);
+//changes data when pressing space bar
+app.post("/", (req,res) => {
+	dataItem.find({}, function (err, docs) {
+		randomDoc = docs[randomNum(0, docs.length)]; //generates random number to display random doc
+		res.render("home", { title: randomDoc.projectName, description: randomDoc.projectDescription,  user: randomDoc.projectCreator });
 	});
-	res.redirect("/");
+})
+//adds item to database
+app.post("/create", (req, res) => {
+	dataItem.insert([{ projectName: req.body.title, projectDescription: req.body.description, projectCreator : req.body.user }], function (err, docs) {
+		console.log("running if")
+	});
+	res.redirect("/") 
+
 });
-//
-app.listen(port, () => {
+
+//on start
+app.listen(port, () => { 
 	console.log(`Example app listening at http://localhost:${port}`);
 });
+
 
 function randomNum(min, max) {
 	return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
