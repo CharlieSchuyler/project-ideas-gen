@@ -1,0 +1,17 @@
+{
+  "name": "llll",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "leveldown": "^6.1.0",
+    "linvodb3": "^3.26.0"
+  }
+}
