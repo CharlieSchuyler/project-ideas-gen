@@ -4,14 +4,18 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/css/new.css" />
 		<title>Document</title>
 	</head>
 	<body>
-		<form action="/create" method="post">
-			<input type="text" name="title" placeholder="Enter title" />
-			<input type="text" name="description" placeholder="Enter description" />
-			<input type="text" name="user" placeholder="Enter username"/>
-			<button type="submit" >Submit</button>
-		</form>
+		<div class="formContainer">
+			<form action="/create" method="post">
+				<h1>Submit project</h1>
+				<input type="text" name="title" placeholder="Enter title" />
+				<input type="text" name="description" placeholder="Enter description" />
+				<input type="text" name="user" placeholder="Enter username" />
+				<button type="submit">Submit</button>
+			</form>
+		</div>
 	</body>
 </html>
