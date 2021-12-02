@@ -1,16 +1,17 @@
-document.body.addEventListener("load", setBackgroundColor());
-function setBackgroundColor() {
-    console.log("sjidoajo")
-    document.body.style.backgroundColor = `rgba(${Math.floor(Math.random() * 255) + 1}, ${Math.floor(Math.random() * 255) + 1},${Math.floor(Math.random() * 255) + 1})`
+function redirect() {
+  window.location.href = "/add-to-database";
 }
+//if database is empty
+// document.querySelector("#redirect").addEventListener("click", redirect());
 
-function redirect(){
-    window.location.href = "/create";
-}
+//on space bar or button click
+document.addEventListener("keydown", () => reloadPage(event));
+document.querySelector("#reload").addEventListener("click", () => reloadPage(event));
 
-document.addEventListener("keyup", function(event) {
+function reloadPage(event) {
   if (event.keyCode === 32) {
     window.location.reload();
-    
+  } else if (event.type === "click") {
+    window.location.reload();
   }
-});
+}

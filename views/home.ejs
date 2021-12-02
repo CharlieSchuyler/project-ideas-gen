@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" type="text/css" href="css/home.css">
-		<title>Home</title>
-	</head>
-	<body>
-		<div class="main">
-			<div class="container">
-				<h1 class="title"><%= title %></h1>
-				<p class="description"><%= description %> </p>
-				<p class="user"><%= user %> </p>
-			</div>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css/home.css" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<title>Document</title>
+</head>
+<body>
+	<nav>
+		<div class="logo">logo</div>
+		<ul>
+			<li class="active">Home</li>
+			<li><a href="/add-to-database">Have an idea?</a></li>
+		</ul>
+	</nav>
+	<div class="container">
+		<div class="data">
+			<% if (exists) { %>
+				<h1 class="title text"><%= title %></h1>
+				<h3 class="user text">Idea submitted by : <%= user %> </h3>
+				<button class="next button" id="reload">Next Idea</button>
+			<% } else{%>
+				<h1 class="title text">No projects exist :(</h1>
+				<button class="noneExist button" id="redirect" onclick="redirect()" >Create your own?</button>
+			<% }%>
+
 		</div>
-		<div class="create" onclick="redirect()">
-			Want to add your own idea?
-		</div>
-	</body>
+		<img src="/images/background.svg" alt="">
+	</div>
 	<script src="js/home.js"></script>
+
+</body>
 </html>
+		
+		<!-- <h1 class="title"><%= title %></h1>
+			<p class="user"><%= user %></p> -->
+			<!-- <div class="create" onclick="redirect()">Want to add your own idea?</div> -->
