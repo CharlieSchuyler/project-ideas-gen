@@ -23,7 +23,7 @@ const recaptcha = new Recaptcha("6LfgonEdAAAAAL89_Mmoq3wg4g0CB1rM43FQNZzM", "6Lf
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-  host: "localhost",
+  host: "192.168.0.150",
   user: "username",
   password: "password",
   database: "projectGenerator"
