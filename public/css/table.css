@@ -65,7 +65,7 @@ table th {
 
   table td::before {
     /*
-    * aria-label has no advantage, it won't be read inside a table
+    aria-label has no advantage, it won't be read inside a table
     content: attr(aria-label);
     */
     content: attr(data-label);
@@ -85,3 +85,17 @@ body {
   line-height: 1.25;
   background-color: #e5e5e5;
 }
+
+/* admin */
+table td:nth-child(4), table td:nth-child(5){
+  min-width: 2px !important;
+  max-width: 2px !important;
+  word-wrap: break-word;
+}
+.admin{
+  cursor: pointer;
+}
+.yes:hover{
+  background-color: #51CB20;
+}
+.no:hover{ background-color: #F44708;}

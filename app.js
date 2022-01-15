@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const port = 3000;
+const database = require("./database")
 //database
 const LinvoDB = require("linvodb3");
 LinvoDB.dbPath = process.cwd();
@@ -17,17 +18,45 @@ app.use(bodyParser.json());
 const Recaptcha = require("express-recaptcha").RecaptchaV2;
 const { json } = require("body-parser");
 const recaptcha = new Recaptcha("6LfgonEdAAAAAL89_Mmoq3wg4g0CB1rM43FQNZzM", "6LfgonEdAAAAAJy5KJm2G9_O6kLTN_LwdEFniPOL");
+
+//mysql
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "username",
+  password: "password",
+  database: "projectGenerator"
+});
+
+con.connect();
+
+//
+
 //get
 app.get("/", async (req, res) => {
-  dataItem.find({}, function (err, docs) {
-    if (docs.length !== 0) {
-      randomDoc = docs[randomNum(0, docs.length)]; //generates random number to display random doc
-      res.render("home", { exists: true, title: randomDoc.projectName, user: randomDoc.projectCreator });
-    } else if (docs.length === 0) {
+  con.query("SELECT * FROM verified",function(err,result){
+    if (err) throw err;
+    if (result.length === 0){
       res.render("home", { exists: false, title: null, user: null });
+    }else{
+      randomDoc = result[randomNum(0, result.length)]
+      res.render("home", {exists: true, title: randomDoc.title, user: randomDoc.user })
     }
-  });
+  })
 });
+app.get("/admin", async(req,res) => {
+  con.query("SELECT * FROM unverified", function (err, result) {
+    if (err) throw err;
+
+    table = ""
+    for(var x in result) {
+      console.log(result[x])
+      table += "<tr><td data-label='Index'>" + result[x]["id"] + "</td><td data-label='Project Name'>" + result[x]["title"] + "</td><td data-label='Project Author'>" + result[x]["user"] + " </td></tr>";
+    }
+    res.render("admin", { table: table });
+  });
+})
 
 app.get("/add-to-database", recaptcha.middleware.render, function (req, res) {
   var recaptchaVal = req.recaptcha;
@@ -36,27 +65,25 @@ app.get("/add-to-database", recaptcha.middleware.render, function (req, res) {
 });
 
 app.get("/database", function (req, res) {
-  dataItem.find({}, function (err, docs) {
-    let obj = { 1: "one", 2: "two", 3: "three" };
-    let result = "";
-    for (let num in docs) {
-      result += "<tr><td data-label='Index'>" + num + "</td><td data-label='Project Name'>" + docs[num].projectName + "</td><td data-label='Project Author'>" + docs[num].projectCreator + "</td></tr>";
+  con.query("SELECT * FROM verified", function (err, result) {
+    if (err) throw err;
+
+    table = ""
+    for(var x in result) {
+      console.log(result[x])
+      table += "<tr><td data-label='Index'>" + result[x]["id"] + "</td><td data-label='Project Name'>" + result[x]["title"] + "</td><td data-label='Project Author'>" + result[x]["user"] + "</td></tr>";
     }
-    res.render("database", { table: result });
+    res.render("database", { table: table });
   });
+
 });
 //post requests
 //adds item to database
 
 app.post("/add-to-database", recaptcha.middleware.render, recaptcha.middleware.verify, function (req, res) {
   if (!req.recaptcha.error) {
-    dataItem.find({ projectName: req.body.title }, function (err, docs) {
-      if (docs.length === 0) {
-        dataItem.insert([{ projectName: req.body.title, projectCreator: req.body.user }]);
-        console.log(`${req.body.title} has been created!`);
-        res.redirect("/");
-      } else res.send(`${req.body.title} already exists!`);
-    });
+    con.query(`INSERT INTO verified (title, user) VALUES ('${req.body.title}','${req.body.user}')`)
+    res.redirect("/")
   } else {
     var recaptchaVal = req.recaptcha;
     if (req.recaptcha === undefined) recaptchaVal = false;

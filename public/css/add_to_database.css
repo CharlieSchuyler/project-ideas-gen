@@ -25,26 +25,17 @@ form label {
   margin-bottom: 3px;
   display: inline-block;
 }
-form input,
-form textarea {
+form input{
   width: 98%;
   height: 45px;
   border: none;
   padding-left: 2%;
   font-size: 16px;
 }
-form input::placeholder,
-form textarea::placeholder {
+form input::placeholder{
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
   font-weight: 400;
-}
-
-form textarea {
-  resize: vertical;
-  max-height: 56px;
-  min-height: 45px;
-  padding-top: 2.5%;
 }
 
 form div {

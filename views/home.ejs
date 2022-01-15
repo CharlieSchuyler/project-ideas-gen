@@ -10,18 +10,20 @@
 </head>
 <body>
 	<nav>
-		<div class="logo">logo</div>
+		<div class="logo">Charlie Schuyler</div>
 		<ul>
 			<li class="active">Home</li>
 			<li><a href="/add-to-database">Have an idea?</a></li>
+			<li class="active"><a href="/">Admin</a></li>
 		</ul>
 	</nav>
 	<div class="container">
 		<div class="data">
 			<% if (exists) { %>
 				<h1 class="title text"><%= title %></h1>
-				<h3 class="user text">Idea submitted by : <%= user %> </h3>
+				<h3 class="user text">submitted by : <b style="font-weight: 600;"><%= user %></b> </h3>
 				<button class="next button" id="reload">Next Idea</button>
+
 			<% } else{%>
 				<h1 class="title text">No projects exist :(</h1>
 				<button class="noneExist button" id="redirect" onclick="redirect()" >Create your own?</button>
@@ -35,6 +37,3 @@
 </body>
 </html>
 		
-		<!-- <h1 class="title"><%= title %></h1>
-			<p class="user"><%= user %></p> -->
-			<!-- <div class="create" onclick="redirect()">Want to add your own idea?</div> -->

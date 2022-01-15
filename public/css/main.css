@@ -25,7 +25,7 @@ nav ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 15%;
+  width: 20%;
   font-size: 16px;
 }
 nav ul.database {
