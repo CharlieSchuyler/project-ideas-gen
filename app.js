@@ -1,60 +1,102 @@
-const { promiseImpl } = require("ejs");
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const port = 3000;
+const database = require("./database")
 //database
-var LinvoDB = require("linvodb3");
+const LinvoDB = require("linvodb3");
 LinvoDB.dbPath = process.cwd();
-var dataItem = new LinvoDB("items", {});
+const dataItem = new LinvoDB("items", {});
 
 app.set("view engine", "ejs"); //set view engine
-app.use(express.urlencoded({ extended: true })); //allow routing
 app.use(express.static("public")); //use static files
 app.use("/static", express.static("public")); //use static files
+app.use(express.urlencoded({ extended: true })); //allow routing
+app.use(bodyParser.json());
 
-/*
-	get requests
-*/
-app.get("/", (req, res) => {
-	dataItem.find({}, function (err, docs) {
-		randomDoc = docs[randomNum(0, docs.length)]; //generates random number to display random doc
-		res.render("home", { title: randomDoc.projectName, description: randomDoc.projectDescription, user: randomDoc.projectCreator });
-	});
+// recaptcha`
+const Recaptcha = require("express-recaptcha").RecaptchaV2;
+const { json } = require("body-parser");
+const recaptcha = new Recaptcha("6LfgonEdAAAAAL89_Mmoq3wg4g0CB1rM43FQNZzM", "6LfgonEdAAAAAJy5KJm2G9_O6kLTN_LwdEFniPOL");
+
+//mysql
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "192.168.0.150",
+  user: "username",
+  password: "password",
+  database: "projectGenerator"
 });
 
-app.get("/create", (req, res) => res.render("new")); // render create page
+con.connect();
 
-app.get("/find", (req, res) => {
-	dataItem.find({}, function (err, docs) {
-		res.render("find", { docs: JSON.stringify(docs[0]) });
-	});
+//
+
+//get
+app.get("/", async (req, res) => {
+  con.query("SELECT * FROM verified",function(err,result){
+    if (err) throw err;
+    if (result.length === 0){
+      res.render("home", { exists: false, title: null, user: null });
+    }else{
+      randomDoc = result[randomNum(0, result.length)]
+      res.render("home", {exists: true, title: randomDoc.title, user: randomDoc.user })
+    }
+  })
+});
+app.get("/admin", async(req,res) => {
+  con.query("SELECT * FROM unverified", function (err, result) {
+    if (err) throw err;
+
+    table = ""
+    for(var x in result) {
+      console.log(result[x])
+      table += "<tr><td data-label='Index'>" + result[x]["id"] + "</td><td data-label='Project Name'>" + result[x]["title"] + "</td><td data-label='Project Author'>" + result[x]["user"] + " </td></tr>";
+    }
+    res.render("admin", { table: table });
+  });
+})
+
+app.get("/add-to-database", recaptcha.middleware.render, function (req, res) {
+  var recaptchaVal = req.recaptcha;
+  if (req.recaptcha === undefined) recaptchaVal = false;
+  res.render("add_to_database", { captcha: res.recaptcha, error: recaptchaVal });
 });
 
-/*
-	post requests
-*/
-app.post("/create", async (req, res) => {
-	//when form is submitted
-	dataItem.find({ projectName: req.body.title }, (err, docs) => {
-		//finds project
-		if (docs.length >= 1) res.send(`'${req.body.title}' already exists`);
-		// if docs.length >= project name entered already exists
-		else {
-			// else adds data to the database
-			dataItem.insert([{ projectName: req.body.title, projectDescription: req.body.description, projectCreator: req.body.user }], function (err, docs) {
-				console.log(`inserted data with the name of - ${docs[0].projectName}`);
-			});
-			res.send(`successfully added '${req.body.title}' to the database`);
-		}
-	});
+app.get("/database", function (req, res) {
+  con.query("SELECT * FROM verified", function (err, result) {
+    if (err) throw err;
+
+    table = ""
+    for(var x in result) {
+      console.log(result[x])
+      table += "<tr><td data-label='Index'>" + result[x]["id"] + "</td><td data-label='Project Name'>" + result[x]["title"] + "</td><td data-label='Project Author'>" + result[x]["user"] + "</td></tr>";
+    }
+    res.render("database", { table: table });
+  });
+
+});
+//post requests
+//adds item to database
+
+app.post("/add-to-database", recaptcha.middleware.render, recaptcha.middleware.verify, function (req, res) {
+  if (!req.recaptcha.error) {
+    con.query(`INSERT INTO verified (title, user) VALUES ('${req.body.title}','${req.body.user}')`)
+    res.redirect("/")
+  } else {
+    var recaptchaVal = req.recaptcha;
+    if (req.recaptcha === undefined) recaptchaVal = false;
+    //invalid-input-response
+    res.render("add_to_database", { captcha: res.recaptcha, error: { message: "Please complete the reCaptcha", error: recaptchaVal.error } });
+  }
 });
 
 //on start
 app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at http://localhost:${port}`);
 });
 
-//generates random number to be used for finding random documents
 function randomNum(min, max) {
-	return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
+  return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
 }

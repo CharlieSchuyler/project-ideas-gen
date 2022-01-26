@@ -1,35 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-body{
-    margin: 0%;
-}
-div.main{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+.container {
+  width: 100%;
+  height: 90vh;
+  overflow: hidden;
 }
 
-div.container{
-    
-    font-size: 30px;
-    font-family: 'Roboto', sans-serif;
-    background-color: transparent;
-    width: 30%;
-    min-width: 468px;
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    
+.container img {
+  position: relative;
+  bottom: 20%;
+  filter: brightness(0.6);
 }
-div.create{
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    position: absolute ;
-    left: 3%;
-    bottom: 5%;
-    background-color: violet;
-    padding: 18px 14px 18px 14px;
-    border-radius: 12px;
+
+.data {
+  z-index: 1;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80%;
+}
+.data .text {
+  color: white;
+}
+.data .title {
+  font-size: 30px;
+  padding-bottom: 4%;
+}
+.data .user {
+  padding-bottom: 3%;
+}
+.button {
+  width: 7%;
+  height: 5%;
+  background-color: #adcce9;
+  border: none;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+.noneExist {
+  width: 10%;
+  transition: 0.2s linear all;
+}
+/* 
+hover stuff
+*/
+.button:hover {
+  background-color: #63a9eb;
+  color: white;
+  transition: 0.2s ease all;
 }
