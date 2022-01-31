@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/css/admin.css">
+  <link rel="stylesheet" href="../style/css/navbar.css">
+  <link rel="stylesheet" href="../style/css/table.css">
+
+  <title>Document</title>
+</head>
+
+<body>
+  <nav>
+    <h1 style="font: 25px Courier New, serif; color: white;">fend.rocks</h1>
+    <ul>
+      <li><a href="/">home</a></li>
+      <li><a href="/submit">submit an idea</a></li>
+      <li class="active">admin</li>
+    </ul>
+  </nav>
+  <nav style="height: 40px;background-color: #292929;width: 40%; margin-bottom: 5%;">
+    <ul style="display: flex; justify-content: space-around; width: 100%;">
+      <% if (script==="home" ) { %>
+        <li><a href="admin/pending">pending</a></li>
+        <li><a href="admin/accepted">accepted</a></li>
+        <li><a href="admin/rejected">rejected</a></li>
+        <% } %>
+          <% if (script==="rejected" ) { %>
+            <li><a href="pending">pending</a></li>
+            <li><a href="accepted">accepted</a></li>
+            <li class="active">rejected</li>
+
+            <%} if (script==="accepted" ) { %>
+              <li><a href="pending">pending</a></li>
+              <li class="active">accepted</li>
+              <li><a href="rejected">rejected</a></li>
+
+              <% } if (script==="pending" ) { %>
+                <li class="active">pending</li>
+                <li><a href="accepted">accepted</a></li>
+                <li><a href="rejected">rejected</a></li>
+                <%}%>
+
+    </ul>
+  </nav>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Project Name</th>
+        <th scope="col">Project Author</th>
+        <th scope="col">Difficulty</th>
+        <% if (script !=="rejected" ) { %>
+          <th scope="col" class="button reject"></th>
+          <% } %>
+            <% if (script !=="accepted" ) { %>
+              <th scope="col" class="button accept"></th>
+              <% } %>
+      </tr>
+      <%- table %>
+    </thead>
+  </table>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="../js/admin/<%= script %>.js"></script>
+
+</html>

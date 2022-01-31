@@ -1,0 +1,25 @@
+body{
+  margin: 0%;
+  background-color: #161616;
+  div.main{
+    padding: 0%;
+    width: 100%;
+    height: 94vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    div.container{
+      margin-bottom: 10%;
+      color: white;
+      h1{
+        font: bold 30px Courier New, serif;
+        padding-bottom: 5%;
+      }
+      h2{
+        font: 20px Courier New, serif;
+        
+      }
+    }
+  }
+}

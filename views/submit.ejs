@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style/css/navbar.css">
+  <link rel="stylesheet" href="style/css/submit.css">
+  <link rel="stylesheet" href="style/css/alert.css">
+
+  <title>Document</title>
+</head>
+
+<body>
+  <nav>
+    <h1 style="font: 25px Courier New, sans-serif; color: white;">fend.rocks</h1>
+    <ul>
+      <li><a href="/">home</a></li>
+      <li class="active">submit an idea</li>
+      <li><a href="/admin">admin</a></li>
+    </ul>
+  </nav>
+
+  <form class="main" name="postForm" action="/submit" method="post">
+    <% if (error) { %>
+      <div class="alert alert-danger" role="alert">
+        <%= error.message %>
+      </div>
+      <% } %>
+        <div class="textContainer">
+          <label for="title">title <span style="color: red;">*</span></label>
+          <input type="text" name="title" id="title" maxlength="54" required>
+        </div>
+        <div class="textContainer">
+          <label for="user">user <span style="color: red;">*</span></label>
+          <input type="text" name="user" id="user" maxlength="24" required>
+        </div>
+        <div class="container">
+
+          <div class="difficultyContainer">
+            <div class="containers">
+              <label class="radioButton">
+                <input type="radio" name="difficulty" value='beginner'>
+                <span class="checkmark"></span>
+              </label>
+              <label for="difficulty" style="color: white;">beginner</label>
+
+            </div>
+            <div class="containers">
+              <label class="radioButton">
+                <input type="radio" name="difficulty" value='intermediate'>
+                <span class="checkmark"></span>
+              </label>
+              <label for="difficulty" style="color: white;">intermediate</label>
+
+            </div>
+            <div class="containers">
+              <label class="radioButton">
+                <input type="radio" name="difficulty" value='advanced'>
+                <span class="checkmark"></span>
+              </label>
+              <label for="difficulty" style="color: white;">advanced</label>
+            </div>
+          </div>
+          <%- captcha %>
+        </div>
+        <button type="submit" style="cursor: pointer;">submit for revision</button>
+  </form>
+</body>
+
+
+</html>

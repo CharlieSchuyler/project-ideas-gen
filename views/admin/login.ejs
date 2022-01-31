@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/css/submit.css">
+  <link rel="stylesheet" href="../style/css/alert.css">
+
+
+  <title>Document</title>
+</head>
+
+<body>
+  <form class="main" name="login" action="/admin/login/password" method="post">
+    <div class="alert alert-danger" role="alert">invalid email or password</div>
+    <div class="textContainer">
+      <label for="title">username or email<span style="color: red;">*</span></label>
+      <input type="text" name="email" id="email" maxlength="54" required>
+    </div>
+    <div class="textContainer">
+      <label for="user">password<span style="color: red;">*</span></label>
+      <input type="password" name="password" id="password" maxlength="24" required>
+    </div>
+    <button type="submit" style="cursor: pointer;">login</button>
+  </form>
+</body>
+
+</html>

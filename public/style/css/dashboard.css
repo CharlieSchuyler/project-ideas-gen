@@ -1,0 +1,26 @@
+body {
+  margin: 0%;
+  background-color: #161616;
+}
+body div.main {
+  padding: 0%;
+  width: 100%;
+  height: 94vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+body div.main div.container {
+  margin-bottom: 10%;
+  color: white;
+}
+body div.main div.container h1 {
+  font: bold 30px Courier New, serif;
+  padding-bottom: 5%;
+}
+body div.main div.container h2 {
+  font: 20px Courier New, serif;
+}
+
+/*# sourceMappingURL=dashboard.css.map */
