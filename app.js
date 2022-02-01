@@ -6,6 +6,7 @@ const port = 3000;
 
 //routes
 const adminRouter = require("./routes/admin")
+const randomRouter = require("./routes/addRandom")
 
 app.set("view engine", "ejs"); //set view engine
 app.use(express.static("public")); //use static files
@@ -13,6 +14,7 @@ app.use("/static", express.static("public")); //use static files
 app.use(express.urlencoded({ extended: true })); //allow routing
 app.use(bodyParser.json());
 app.use('/admin', adminRouter)
+app.use('/random', randomRouter)
 
 
 
@@ -41,29 +43,48 @@ con.connect();
 
 //get
 
+
+
 app.get("/", function (req, res) {
   con.query("SELECT * FROM data WHERE ACCEPTED='1'", function (err, result) {
     if (err) throw err;
+    const itemLists = []
+
+
+    for (let i = 0; i < 10; i++) {
+      if (i > result.length || i > 40) break
+      const index = randomNum(0, result.length)
+      itemLists.push(result[index])
+    }
+    // for (let i = 0; i < result.length; i++) {
+    //   const index = randomNum(0, result.length)
+    //   console.log(result[index]);
+    //   itemLists.push(result)
+    //   if (i > 30) {
+    //     break
+    //   }
+    // }
+
+
     if (result.length === 0) res.render("home", { exists: false, title: null, difficulty: null, user: null });
     else {
       index = result[randomNum(0, result.length)]
-      res.render("home", { exists: true, title: index.title, difficulty: index.difficulty, author: index.user })
+      res.render("home", { exists: true, items: itemLists, title: index.title, difficulty: index.difficulty, author: index.user })
     }
   })
 })
 
 
 app.get("/submit", recaptcha.middleware.renderWith({ theme: "dark" }), function (req, res) {
-  var recaptchaVal = req.recaptcha;
-  if (req.recaptcha === undefined) recaptchaVal = false;
-  res.render("submit", { captcha: res.recaptcha, error: recaptchaVal });
+
+  res.render("submit", { captcha: res.recaptcha, error: reCaptchaErrRes(req.query.error), });
 });
 
 
 
 
 app.post("/submit", recaptcha.middleware.render, recaptcha.middleware.verify, function (req, res) {
-  console.log(req.body)
+
   if (!req.recaptcha.error) {
     const risk_level = () => {
       if (!words.list.includes(req.body.title) && !words.list.includes(req.body.user)) {
@@ -75,14 +96,27 @@ app.post("/submit", recaptcha.middleware.render, recaptcha.middleware.verify, fu
     con.query(`INSERT INTO data (title,user,difficulty,risk_level) VALUES ('${req.body.title}','${req.body.user}','${req.body.difficulty}','${risk_level()}')`)
     res.redirect("/")
   }
-  else {
+  else if (req.recaptcha.error) {
     var recaptchaVal = req.recaptcha;
-    if (req.recaptcha === undefined) recaptchaVal = false;
+    if (req.recaptcha.error === undefined) recaptchaVal = false;
     //invalid-input-response
-    res.render("/submit", { captcha: res.recaptcha, error: { message: "Please complete the reCaptcha", error: recaptchaVal.error } });
+    res.redirect(`/submit?error=${req.recaptcha.error}`)
+    // res.render("/submit", { captcha: res.recaptcha, error: { message: "Please complete the reCaptcha", error: recaptchaVal.error } });
   }
 
 });
+
+
+const reCaptchaErrRes = (err) => {
+  if (err === undefined) {
+    return "ok"
+  } else if (err === "invalid-input-response") {
+    return { message: "please complete the reCaptcha" }
+  } else {
+    return { message: `unknown error` }
+  }
+}
+
 
 
 //on start

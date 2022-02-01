@@ -1,6 +1,7 @@
 body {
   margin: 0%;
   background-color: #161616;
+  overflow: hidden;
 }
 body div.main {
   padding: 0%;

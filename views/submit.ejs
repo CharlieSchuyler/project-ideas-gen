@@ -23,7 +23,7 @@
   </nav>
 
   <form class="main" name="postForm" action="/submit" method="post">
-    <% if (error) { %>
+    <% if (error !="ok" ) { %>
       <div class="alert alert-danger" role="alert">
         <%= error.message %>
       </div>

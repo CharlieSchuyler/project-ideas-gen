@@ -9,9 +9,10 @@ document.addEventListener("keydown", () => reloadPage(event));
 document.querySelector("#reload").addEventListener("click", () => reloadPage(event));
 
 function reloadPage(event) {
-  if (event.keyCode === 32) {
-    window.location.reload();
-  } else if (event.type === "click") {
-    window.location.reload();
-  }
+  let i = 0;
+  // if (event.keyCode === 32) {
+  //   window.location.reload();
+  // } else if (event.type === "click") {
+  //   window.location.reload();
+  // }
 }
