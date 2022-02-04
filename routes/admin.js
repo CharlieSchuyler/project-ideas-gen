@@ -6,10 +6,10 @@ const router = express.Router()
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-  host: "192.168.0.150",
-  user: "username",
-  password: "password",
-  database: "projectGenerator"
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASS,
+  database: process.env.DATABASE_DB
 });
 
 

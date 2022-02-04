@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -31,10 +32,10 @@ const words = require("./misc/words")
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-  host: "192.168.0.150",
-  user: "username",
-  password: "password",
-  database: "projectGenerator"
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASS,
+  database: process.env.DATABASE_DB
 });
 
 con.connect();
@@ -46,30 +47,22 @@ con.connect();
 
 
 app.get("/", function (req, res) {
-  con.query("SELECT * FROM data WHERE ACCEPTED='1'", function (err, result) {
+  con.query("SELECT * FROM data WHERE vStatus='1'", function (err, result) {
     if (err) throw err;
     const itemLists = []
 
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 40; i++) {
       if (i > result.length || i > 40) break
       const index = randomNum(0, result.length)
       itemLists.push(result[index])
     }
-    // for (let i = 0; i < result.length; i++) {
-    //   const index = randomNum(0, result.length)
-    //   console.log(result[index]);
-    //   itemLists.push(result)
-    //   if (i > 30) {
-    //     break
-    //   }
-    // }
 
-
-    if (result.length === 0) res.render("home", { exists: false, title: null, difficulty: null, user: null });
+    if (result.length === 0) res.render("home", { exists: false,items: itemLists});
     else {
       index = result[randomNum(0, result.length)]
-      res.render("home", { exists: true, items: itemLists, title: index.title, difficulty: index.difficulty, author: index.user })
+      console.log(itemLists)
+      res.render("home", { exists: true, items: itemLists})
     }
   })
 })
