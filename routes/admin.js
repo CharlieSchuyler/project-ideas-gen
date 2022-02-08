@@ -53,14 +53,14 @@ router.post("/", function (req, res) {
 	const origin = req.body.origin;
 	const id = req.body.data.id;
 	if (origin === "accepted") {
-		con.query(`UPDATE data SET accepted='0', rejected='1' WHERE id='${id}'`);
+		con.query(`UPDATE data SET vStatus='-1' WHERE id='${id}'`);
 	} else if (origin === "rejected") {
-		con.query(`UPDATE data SET rejected='0', accepted='1' WHERE id='${id}'`);
+		con.query(`UPDATE data SET vStatus='1' WHERE id='${id}'`);
 	} else if (origin === "pending") {
 		if (req.body.action) {
-			con.query(`UPDATE data SET accepted='1' WHERE id='${id}'`);
+			con.query(`UPDATE data SET vStatus='1' WHERE id='${id}'`);
 		} else if (!req.body.action) {
-			con.query(`UPDATE data SET rejected='1' WHERE id='${id}'`);
+			con.query(`UPDATE data SET vStatus='-1' WHERE id='${id}'`);
 		}
 	}
 });
