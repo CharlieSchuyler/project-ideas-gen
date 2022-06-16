@@ -7,12 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style/css/dashboard.css">
   <link rel="stylesheet" href="style/css/navbar.css">
+  <link rel="stylesheet" href="style/css/mobile/navbar.css">
 
   <title>Document</title>
 </head>
 
 <body <% if( items.length >= 2){ %> onload="changeProject()"<% } %>  >
   <nav>
+    <div class="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
     <h1 style="font: 25px Courier New, sans-serif; color: white;">fend.rocks</h1>
     <ul>
       <li class="active">home</li>
